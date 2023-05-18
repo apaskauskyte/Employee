@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.TextView
+import lt.ausra.employee.databinding.EmployeeBinding
 
 class CustomAdapter(context: Context) : BaseAdapter() {
 
@@ -38,12 +38,22 @@ class CustomAdapter(context: Context) : BaseAdapter() {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = convertView ?: inflater.inflate(R.layout.employee, parent, false)
+        var view = convertView
 
-        view.findViewById<TextView>(R.id.idTextView).text = list[position].id.toString()
-        view.findViewById<TextView>(R.id.firstNameTextView).text = list[position].firstName
-        view.findViewById<TextView>(R.id.lastNameTextView).text = list[position].lastName
-        view.findViewById<TextView>(R.id.positionTextView).text = list[position].position
+        val binding: EmployeeBinding
+
+        if (view == null) {
+            binding = EmployeeBinding.inflate(inflater, parent, false)
+            view = binding.root
+            view.tag = binding
+        } else {
+            binding = view.tag as EmployeeBinding
+        }
+
+        binding.idTextView.text = list[position].id.toString()
+        binding.firstNameTextView.text = list[position].firstName
+        binding.lastNameTextView.text = list[position].lastName
+        binding.positionTextView.text = list[position].position
 
         return view
     }
